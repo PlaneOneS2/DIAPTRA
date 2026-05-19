@@ -1,17 +1,37 @@
 create table Usuario(
 	id_usuario serial primary key,
-	nome varchar(50),
-	data_nas date
+	nome varchar(50) not null,
+	data_nas date not null,
+	email varchar (70) not null,
+	telefone varchar (11) not null,
+	senha varchar (30) not null
 );
 
-create table Email(
-	id_email serial primary key,
-	email varchar(70),
-	usuario_id int references Usuario(id_usuario)
+create table Disciplina(
+	id_disciplina serial primary key,
+	nomeDisciplina varchar(50) not null
+); 
+
+create table Avaliacao(	
+	id_avaliacao serial primary key,
+	valorAvaliacao numeric(4,2) not null,
+	nomeAvaliacao varchar (30) not null,
+	descricaoAvaliacao varchar (250),
+	notaObtidaAvaliaca numeric(4,2),
+	disciplinaID int references Disciplina(id_disciplina),
+	agendaID int references Agenda(id_agenda)
 );
 
-create table Telefone(
-	id_telefone serial primary key,
-	telefone varchar(11),
-	usuario_id int references Usuario(id_usuario)
+create table Agenda(
+	id_agenda serial primary key,
+	tituloAgendamento varchar (50) not null,
+	descricaoAgenda varchar(100),
+	dataAgenda date not null,
+	horarioAgenda time
 );
+
+
+
+
+
+
