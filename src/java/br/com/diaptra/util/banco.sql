@@ -30,8 +30,13 @@ create table Agenda(
 	horarioAgenda time
 );
 
-
-
-
-
-
+create Table Endereco(
+	id_endereco serial primary key,
+	rua varchar (50) not null,
+        numero int not null,
+	bairro varchar(50) not null,
+	cidade varchar (30) not null,
+	estado varchar(2) not null,
+	complemento varchar (50),
+	usuarioID int references Usuario(id_usuario)
+);
