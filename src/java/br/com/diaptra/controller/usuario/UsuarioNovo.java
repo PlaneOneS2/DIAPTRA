@@ -1,51 +1,90 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package br.com.diaptra.controller.usuario;
 
+import br.com.diaptra.dao.UsuarioDAO;
 import br.com.diaptra.model.Usuario;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author ferreira
- */
 @WebServlet(name = "UsuarioNovo", urlPatterns = {"/UsuarioNovo"})
-public class UsuarioNovo extends HttpServlet{
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+public class UsuarioNovo extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=iso-8859-1");
-        try{
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        response.setContentType("application/json;charset=UTF-8");
+
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String linha;
+        while ((linha = reader.readLine()) != null) {
+            buffer.append(linha);
+        }
+        
+        String jsonRecebido = buffer.toString();
+
+        try {
+            
+            String nome = extrairValorJson(jsonRecebido, "nome");
+            String email = extrairValorJson(jsonRecebido, "email");
+            String senha = extrairValorJson(jsonRecebido, "senha");
+
+            if (nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"status\": \"erro\", \"mensagem\": \"Campos obrigatorios vazios.\"}");
+                return;
+            }
+
             Usuario oUsuario = new Usuario();
-            request.setAttribute("usuario", oUsuario);
-            request.getRequestDispatcher("/cadastros/usuario/usuarioCadastrar.jsp").forward(request, response);
-        } catch(Exception ex){
-            System.out.println("Problema na Servelet carrregar despesa!Erro: " + ex.getMessage());
-            ex.printStackTrace();   
+            oUsuario.setNome(nome);
+            oUsuario.setEmail(email);
+            oUsuario.setSenha(senha);
+
+            UsuarioDAO dao = new UsuarioDAO();
+            
+            boolean cadastrou = dao.cadastrar(oUsuario); 
+
+            if (cadastrou) {
+                response.getWriter().write("{\"status\": \"sucesso\", \"mensagem\": \"Estudante cadastrado com sucesso!\"}");
+            } else {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().write("{\"status\": \"erro\", \"mensagem\": \"Nao foi possivel salvar no banco de dados.\"}");
+            }
+
+        } catch (Exception ex) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"status\": \"erro\", \"mensagem\": \"Erro no servidor: " + ex.getMessage() + "\"}");
+            ex.printStackTrace();
+        }
+    }
+
+    private String extrairValorJson(String json, String chave) {
+        try {
+            int indexChave = json.indexOf("\"" + chave + "\"");
+            if (indexChave == -1) return "";
+            int indexDoisPontos = json.indexOf(":", indexChave);
+            int indexInicioValor = json.indexOf("\"", indexDoisPontos);
+            int indexFimValor = json.indexOf("\"", indexInicioValor + 1);
+            return json.substring(indexInicioValor + 1, indexFimValor);
+        } catch (Exception e) {
+            return "";
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) 
+            throws ServletException, IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+        resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
-
-    @Override
-    public String getServletInfo() {
-        return super.getServletInfo(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
-    }
-    
-    
 }

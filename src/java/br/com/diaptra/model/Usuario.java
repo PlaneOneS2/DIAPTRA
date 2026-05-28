@@ -13,15 +13,33 @@ import java.util.Objects;
  */
 public class Usuario {
     private int id;
-    private String nome;
+    private String nome, email, senha;
     private Date datanascimento;
     
     public Usuario(){
         this.id = 0;
         this.nome = "";
+        this.email = "";
+        this.senha = "";
         this.datanascimento = null;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+    
     public int getId() {
         return id;
     }
