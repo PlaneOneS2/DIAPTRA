@@ -16,5 +16,6 @@ public interface GenericDAO {
     public Boolean alterar(Object objeto);
     public Boolean excluir(int numero);
     public Object carregar(int numero);
+    public Object autenticar(String email, String senha);
     public List<Object> listar();
 }

@@ -47,6 +47,16 @@ public class UsuarioNovo extends HttpServlet {
             oUsuario.setNome(nome);
             oUsuario.setEmail(email);
             oUsuario.setSenha(senha);
+            
+            // ---> CAMPOS NOVOS ADICIONADOS AQUI <---
+            oUsuario.setTelefone(extrairValorJson(jsonRecebido, "telefone"));
+            oUsuario.setDataNascimento(extrairValorJson(jsonRecebido, "dataNascimento"));
+            oUsuario.setRua(extrairValorJson(jsonRecebido, "rua"));
+            oUsuario.setNumero(extrairValorJson(jsonRecebido, "numero"));
+            oUsuario.setBairro(extrairValorJson(jsonRecebido, "bairro"));
+            oUsuario.setCidade(extrairValorJson(jsonRecebido, "cidade"));
+            oUsuario.setEstado(extrairValorJson(jsonRecebido, "estado"));
+            oUsuario.setComplemento(extrairValorJson(jsonRecebido, "complemento"));
 
             UsuarioDAO dao = new UsuarioDAO();
             

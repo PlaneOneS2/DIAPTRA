@@ -1,27 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package br.com.diaptra.model;
 
-import java.util.Date;
 import java.util.Objects;
 
-/**
- *
- * @author ferreira
- */
 public class Usuario {
     private int id;
-    private String nome, email, senha;
-    private Date datanascimento;
+    private String nome, email, senha, telefone;
+    private String dataNascimento;
+    
+    private String rua, numero, bairro, cidade, estado, complemento;
     
     public Usuario(){
         this.id = 0;
         this.nome = "";
         this.email = "";
         this.senha = "";
-        this.datanascimento = null;
+        this.telefone = "";
+        this.dataNascimento = "";
+        this.rua = "";
+        this.numero = "";
+        this.bairro = "";
+        this.cidade = "";
+        this.estado = "";
+        this.complemento = "";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getEmail() {
@@ -39,29 +55,69 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    
-    public int getId() {
-        return id;
+
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDataNascimento() {
+        return dataNascimento;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDataNascimento(String dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
-    public Date getDatanascimento() {
-        return datanascimento;
+    public String getRua() {
+        return rua;
     }
 
-    public void setDatanascimento(Date datanascimento) {
-        this.datanascimento = datanascimento;
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
     }
 
     @Override
@@ -69,7 +125,7 @@ public class Usuario {
         int hash = 7;
         hash = 11 * hash + this.id;
         hash = 11 * hash + Objects.hashCode(this.nome);
-        hash = 11 * hash + Objects.hashCode(this.datanascimento);
+        hash = 11 * hash + Objects.hashCode(this.dataNascimento);
         return hash;
     }
 
@@ -91,8 +147,6 @@ public class Usuario {
         if (!Objects.equals(this.nome, other.nome)) {
             return false;
         }
-        return Objects.equals(this.datanascimento, other.datanascimento);
+        return Objects.equals(this.dataNascimento, other.dataNascimento);
     }
-    
-    
 }
