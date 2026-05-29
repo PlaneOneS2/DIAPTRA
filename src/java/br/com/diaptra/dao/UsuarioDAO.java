@@ -128,7 +128,32 @@ public class UsuarioDAO implements GenericDAO {
     public Boolean inserir(Object objeto) { return false; }
 
     @Override
-    public Boolean alterar(Object objeto) { throw new UnsupportedOperationException("Not supported."); }
+    public Boolean alterar(Object objeto) {
+        Usuario usuario = (Usuario) objeto;
+        Connection conn = Conexao.getConnection();
+        PreparedStatement stmt = null;
+        
+        String sql = "UPDATE Usuario SET nome = ?, email = ?, telefone = ? WHERE id_usuario = ?";
+        
+        try{
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, usuario.getNome());
+            stmt.setString(2, usuario.getEmail());
+            stmt.setString(3, usuario.getTelefone());
+            stmt.setInt(4, usuario.getId());
+            
+            int linhasAfetadas = stmt.executeUpdate();
+            return linhasAfetadas > 0;
+            
+        } catch (SQLException e){
+            System.out.println("Erro ao alterar usuario no PostgreSQL: " + e.getMessage());
+            return false;
+        } finally {
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+            Conexao.fecharConexao(conn);
+        }
+        
+    }
 
     @Override
     public Boolean excluir(int numero) { throw new UnsupportedOperationException("Not supported."); }
